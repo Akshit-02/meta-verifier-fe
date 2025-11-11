@@ -114,3 +114,12 @@ export const getMediaCommentsFromInstagramAccount = /* GraphQL */ `
     }
   }
 `;
+
+export const sendWhatsappMessage = /* GraphQL */ `
+  mutation SendWhatsappMessage($userId: String!) {
+    sendWhatsappMessage(userId: $userId) {
+      success
+      message
+    }
+  }
+`;

@@ -6,6 +6,7 @@ import {
 } from "aws-amplify/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { sendWhatsappMessageApi } from "../../services/handleApi";
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(3);
   const [session, setSession] = useState(null);
 
   const handleSubmit = async () => {
@@ -34,6 +35,7 @@ const LoginPage = () => {
           // await dispatch(fetchUser(currentUser.username));
 
           navigate("/dashboard");
+          await sendWhatsappMessageApi({ userId: currentUser.username });
         } catch (error) {
           console.error("Error during login:", error);
         }
@@ -66,6 +68,7 @@ const LoginPage = () => {
           // await dispatch(fetchUser(currentUser.username));
 
           navigate("/dashboard");
+          await sendWhatsappMessageApi({ userId: currentUser.username });
         } catch (error) {
           console.error("Error during password confirmation:", error);
         }
@@ -223,6 +226,7 @@ const LoginPage = () => {
       ) {
         // Successfully verified
         navigate("/dashboard");
+        await sendWhatsappMessageApi({ userId: confirmResponse?.user?.id });
         setSession(null);
 
         // Check for campaign invite link

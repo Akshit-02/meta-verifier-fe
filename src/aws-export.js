@@ -8,10 +8,10 @@ const awsmobile = {
   aws_cognito_identity_pool_id:
     "ap-south-1:29f273c3-d48e-44ff-bb76-fed9867564ab",
   aws_cognito_region: "ap-south-1",
-  aws_user_pools_id: "ap-south-1_eOCn1c01x",
-  // aws_user_pools_id: "ap-south-1_ghuPh5u8X", //otp
-  aws_user_pools_web_client_id: "70ealnbtjbpjuv60b0gvbk24c5",
-  // aws_user_pools_web_client_id: "3kne88ckibt1cvsgsbiikd92gl", //otp
+  // aws_user_pools_id: "ap-south-1_eOCn1c01x",
+  aws_user_pools_id: "ap-south-1_ghuPh5u8X", //otp
+  // aws_user_pools_web_client_id: "70ealnbtjbpjuv60b0gvbk24c5",
+  aws_user_pools_web_client_id: "3kne88ckibt1cvsgsbiikd92gl", //otp
   aws_user_files_s3_bucket: "meta-verifier-dev-media-assets",
   aws_user_files_s3_bucket_region: "ap-south-1",
 };

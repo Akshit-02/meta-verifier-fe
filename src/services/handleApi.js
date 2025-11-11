@@ -4,6 +4,7 @@ import {
   linkInstagramAccount,
   manageUser,
   postCommentOnInstagramAccount,
+  sendWhatsappMessage,
 } from "./api";
 
 const client = generateClient();
@@ -71,6 +72,22 @@ export const getMediaCommentsFromInstagramAccountApi = async (data) => {
       authMode: "userPool",
     });
     return response?.data?.getMediaCommentsFromInstagramAccount;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const sendWhatsappMessageApi = async (data) => {
+  try {
+    const response = await client.graphql({
+      query: sendWhatsappMessage,
+      variables: {
+        userId: data.userId,
+      },
+      authMode: "userPool",
+    });
+    return response?.data?.sendWhatsappMessage;
   } catch (error) {
     console.error("Error:", error);
     throw error;
