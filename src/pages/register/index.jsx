@@ -36,7 +36,11 @@ const RegisterPage = () => {
       });
       console.log("user", user);
       if (user.isSignUpComplete) {
-        autoSignIn();
+        // autoSignIn();
+        await signIn({
+          username: email.toLowerCase(),
+          password: password,
+        });
         try {
           const currentUser = await getCurrentUser();
           console.log("currentUser", currentUser);
