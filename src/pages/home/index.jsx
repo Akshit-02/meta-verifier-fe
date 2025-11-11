@@ -52,6 +52,12 @@ const LandingPage = () => {
               >
                 Login
               </a>
+              <a
+                href="/register"
+                className="px-6 py-2.5 rounded-full bg-[#2B2B2B] text-white hover:bg-[#919191] transition-all duration-300 font-medium shadow-lg shadow-[#2B2B2B]/30 hover:shadow-xl hover:scale-105"
+              >
+                Register
+              </a>
             </div>
           </div>
         </div>
