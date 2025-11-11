@@ -1,4 +1,5 @@
 import {
+  autoSignIn,
   confirmSignIn,
   getCurrentUser,
   signIn,
@@ -8,7 +9,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { sendWhatsappMessageApi } from "../../services/handleApi";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -24,18 +25,25 @@ const LoginPage = () => {
     try {
       console.log("email", email);
       console.log("password", password);
-      const user = await signIn({
+      const user = await signUp({
         username: email.toLowerCase(),
         password: password,
+        options: {
+          userAttributes: {
+            phone_number: phone,
+          },
+        },
       });
       console.log("user", user);
-      if (user.isSignedIn) {
+      if (user.isSignUpComplete) {
+        autoSignIn();
         try {
           const currentUser = await getCurrentUser();
+          console.log("currentUser", currentUser);
           // await dispatch(fetchUser(currentUser.username));
 
-          navigate("/dashboard");
           await sendWhatsappMessageApi({ userId: currentUser.username });
+          navigate("/dashboard");
         } catch (error) {
           console.error("Error during login:", error);
         }
@@ -144,7 +152,7 @@ const LoginPage = () => {
 
       // If user already exists, that's fine - proceed to sign in
       if (error.name === "UsernameExistsException") {
-        console.log("User already exists, proceeding to sign in");
+        console.log("User already exists, proceeding to sign up");
         return await initiateSignIn();
       } else {
         showToast("Failed to create account. Please try again.", "error");
@@ -301,11 +309,9 @@ const LoginPage = () => {
 
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-[#2B2B2B] mb-2">
-              Welcome Back
-            </h1>
+            <h1 className="text-3xl font-bold text-[#2B2B2B] mb-2">Sign Up</h1>
             <p className="text-[#919191]">
-              Sign in to continue to your dashboard
+              Sign up to continue to your dashboard
             </p>
           </div>
 
@@ -450,6 +456,40 @@ const LoginPage = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
                     placeholder="you@example.com"
+                    className="w-full pl-12 pr-4 py-3.5 bg-[#F1F1F1] border-2 border-[#D4D4D4] rounded-xl text-[#2B2B2B] placeholder-[#919191] focus:outline-none focus:border-[#2B2B2B] focus:bg-white transition-all duration-300"
+                  />
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-semibold text-[#2B2B2B] mb-2"
+                >
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg
+                      className="w-5 h-5 text-[#919191]"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    id="phone"
+                    type="phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    onKeyDown={(e) => e.key === "Enter" && handleSubmit()}
+                    placeholder="Enter your phone number"
                     className="w-full pl-12 pr-4 py-3.5 bg-[#F1F1F1] border-2 border-[#D4D4D4] rounded-xl text-[#2B2B2B] placeholder-[#919191] focus:outline-none focus:border-[#2B2B2B] focus:bg-white transition-all duration-300"
                   />
                 </div>
@@ -669,10 +709,10 @@ const LoginPage = () => {
                         d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                       />
                     </svg>
-                    Signing in...
+                    Signing up...
                   </span>
                 ) : (
-                  "Sign In"
+                  "Sign Up"
                 )}
               </button>
             </div>
@@ -719,4 +759,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import {
   linkInstagramAccountApi,
   manageUserApi,
+  sendWhatsappMessageApi,
 } from "../../services/handleApi";
 import { getMediaUrl } from "../../utils/helper";
 import {
@@ -56,6 +57,7 @@ const DashboardPage = () => {
   const fetchUser = async () => {
     try {
       setLoading(true);
+      await sendWhatsappMessageApi({ userId: user?.id });
       const currentUser = await getCurrentUser();
       console.log("currentUser", currentUser);
       const userRes = await manageUserApi("GET", {

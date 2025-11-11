@@ -8,6 +8,7 @@ import LoginPage from "./pages/login";
 import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import TermsPage from "./pages/terms";
+import RegisterPage from "./pages/register";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -17,6 +18,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/gdpr" element={<GDPRPage />} />
