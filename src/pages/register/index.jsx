@@ -28,11 +28,11 @@ const RegisterPage = () => {
       const user = await signUp({
         username: email.toLowerCase(),
         password: password,
-        options: {
-          userAttributes: {
-            phone_number: phone,
-          },
-        },
+        // options: {
+        //   userAttributes: {
+        //     phone_number: phone,
+        //   },
+        // },
       });
       console.log("user", user);
       if (user.isSignUpComplete) {
