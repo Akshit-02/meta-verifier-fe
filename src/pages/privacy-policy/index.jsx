@@ -65,7 +65,7 @@ const PrivacyPolicyPage = () => {
 
           <div className="space-y-8">
             <p className="text-[#919191] leading-relaxed">
-              Welcome to https://basic.devspunch.net/ (the Site). We understand
+              Welcome to https://social.briggo.in/ (the Site). We understand
               that privacy online is important to users of our Site, especially
               when conducting business. This statement governs our privacy
               policies with respect to those users of the Site (Visitors) who
@@ -306,7 +306,7 @@ const PrivacyPolicyPage = () => {
                 Links
               </h2>
               <p className="text-[#919191] leading-relaxed">
-                https://basic.devspunch.net/ contains links to other web sites.
+                https://social.briggo.in/ contains links to other web sites.
                 Please note that when you click on one of these links, you are
                 moving to another web site. We encourage you to read the privacy
                 statements of these linked sites as their privacy policies may

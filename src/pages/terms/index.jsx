@@ -67,7 +67,7 @@ const TermsPage = () => {
             {/* Important Notice Box */}
             <div className="bg-gradient-to-r from-[#2B2B2B] to-[#919191] p-6 rounded-2xl">
               <p className="text-white leading-relaxed font-medium">
-                BY ACCESSING OR USING https://basic.devspunch.net/ YOU REPRESENT
+                BY ACCESSING OR USING https://social.briggo.in/ YOU REPRESENT
                 THAT YOU HAVE THE FULL AUTHORITY TO ACT TO BIND YOURSELF, ANY
                 THIRD PARTY, COMPANY, OR LEGAL ENTITY, AND THAT YOUR USE AND/OR
                 INTERACTION, AS WELL AS CONTINUING TO USE OR INTERACT, WITH THE
@@ -79,33 +79,33 @@ const TermsPage = () => {
             <div className="space-y-6">
               <p className="text-[#919191] leading-relaxed">
                 BY VIEWING, VISITING, USING, OR INTERACTING WITH
-                https://basic.devspunch.net/ OR WITH ANY BANNER, POP-UP, OR
+                https://social.briggo.in/ OR WITH ANY BANNER, POP-UP, OR
                 ADVERTISING THAT APPEARS ON IT, YOU ARE AGREEING TO ALL THE
                 PROVISIONS OF THIS TERMS OF USE POLICY AND THE PRIVACY POLICY OF
-                https://basic.devspunch.net/.
+                https://social.briggo.in/.
               </p>
 
               <p className="text-[#919191] leading-relaxed">
-                https://basic.devspunch.net/ SPECIFICALLY DENIES ACCESS TO ANY
+                https://social.briggo.in/ SPECIFICALLY DENIES ACCESS TO ANY
                 INDIVIDUAL THAT IS COVERED BY THE CHILDREN'S ONLINE PRIVACY
                 PROTECTION ACT (COPPA) OF 1998.
               </p>
 
               <p className="text-[#919191] leading-relaxed">
-                https://basic.devspunch.net/ RESERVES THE RIGHT TO DENY ACCESS
-                TO ANY PERSON OR VIEWER FOR ANY LAWFUL REASON. UNDER THE TERMS
-                OF THE PRIVACY POLICY, WHICH YOU ACCEPT AS A CONDITION FOR
-                VIEWING, https://basic.devspunch.net/ IS ALLOWED TO COLLECT AND
-                STORE DATA AND INFORMATION FOR THE PURPOSE OF EXCLUSION AND FOR
-                MANY OTHER USES.
+                https://social.briggo.in/ RESERVES THE RIGHT TO DENY ACCESS TO
+                ANY PERSON OR VIEWER FOR ANY LAWFUL REASON. UNDER THE TERMS OF
+                THE PRIVACY POLICY, WHICH YOU ACCEPT AS A CONDITION FOR VIEWING,
+                https://social.briggo.in/ IS ALLOWED TO COLLECT AND STORE DATA
+                AND INFORMATION FOR THE PURPOSE OF EXCLUSION AND FOR MANY OTHER
+                USES.
               </p>
 
               <p className="text-[#919191] leading-relaxed">
                 THIS TERMS OF USE AGREEMENT MAY CHANGE FROM TIME TO TIME.
                 VISITORS HAVE AN AFFIRMATIVE DUTY, AS PART OF THE CONSIDERATION
-                FOR PERMISSION TO ACCESS https://basic.devspunch.net/, TO KEEP
+                FOR PERMISSION TO ACCESS https://social.briggo.in/, TO KEEP
                 THEMSELVES INFORMED OF SUCH CHANGES BY REVIEWING THIS TERMS OF
-                USE PAGE EACH TIME THEY VISIT https://basic.devspunch.net/.
+                USE PAGE EACH TIME THEY VISIT https://social.briggo.in/.
               </p>
             </div>
 
@@ -143,13 +143,13 @@ const TermsPage = () => {
                 for any use whatsoever. In recognition of the fact that it may
                 be difficult to quantify the exact damages arising from
                 infringement of this provision, Visitor agrees to compensate the
-                owners of https://basic.devspunch.net/ with liquidated damages
-                in the amount of U.S. $100,000, or, if it can be calculated, the
+                owners of https://social.briggo.in/ with liquidated damages in
+                the amount of U.S. $100,000, or, if it can be calculated, the
                 actual costs and actual damages for breach of this provision,
                 whichever is greater. Visitor warrants that he or she
                 understands that accepting this provision is a condition of
-                accessing https://basic.devspunch.net/ and that accessing
-                https://basic.devspunch.net/ constitutes acceptance.
+                accessing https://social.briggo.in/ and that accessing
+                https://social.briggo.in/ constitutes acceptance.
               </p>
             </section>
 
@@ -175,25 +175,24 @@ const TermsPage = () => {
               </h2>
               <p className="text-[#919191] leading-relaxed">
                 Unless expressly authorized by website, no one may hyperlink
-                https://basic.devspunch.net/, or portions thereof, (including,
-                but not limited to, logotypes, trademarks, branding or
-                copyrighted material) to theirs for any reason. Furthermore, you
-                are not permitted to reference the URL (website address) of this
-                website or any page of this website in any commercial or
-                non-commercial media without express permission from us, nor are
-                you allowed to 'frame' the site. You specifically agree to
-                cooperate with the Website to remove or de-activate any such
-                activities, and be liable for all damages arising from violating
-                this provision. In recognition of the fact that it may be
-                difficult to quantify the exact damages arising from
-                infringement of this provision, you agree to compensate the
-                owners of https://basic.devspunch.net/ with liquidated damages
-                in the amount of U.S. $100,000, or, if it can be calculated, the
-                actual costs and actual damages for breach of this provision,
-                whichever is greater. You warrant that you understand that
-                accepting this provision is a condition of accessing
-                https://basic.devspunch.net/ and that accessing
-                https://basic.devspunch.net/ constitutes acceptance.
+                https://social.briggo.in/, or portions thereof, (including, but
+                not limited to, logotypes, trademarks, branding or copyrighted
+                material) to theirs for any reason. Furthermore, you are not
+                permitted to reference the URL (website address) of this website
+                or any page of this website in any commercial or non-commercial
+                media without express permission from us, nor are you allowed to
+                'frame' the site. You specifically agree to cooperate with the
+                Website to remove or de-activate any such activities, and be
+                liable for all damages arising from violating this provision. In
+                recognition of the fact that it may be difficult to quantify the
+                exact damages arising from infringement of this provision, you
+                agree to compensate the owners of https://social.briggo.in/ with
+                liquidated damages in the amount of U.S. $100,000, or, if it can
+                be calculated, the actual costs and actual damages for breach of
+                this provision, whichever is greater. You warrant that you
+                understand that accepting this provision is a condition of
+                accessing https://social.briggo.in/ and that accessing
+                https://social.briggo.in/ constitutes acceptance.
               </p>
             </section>
 
@@ -203,9 +202,9 @@ const TermsPage = () => {
               </h2>
               <div className="space-y-4">
                 <p className="text-[#919191] leading-relaxed">
-                  https://basic.devspunch.net/ disclaims any responsibility for
-                  the accuracy of the content appearing at, linked to on, or
-                  mentioned on https://basic.devspunch.net/. Visitors assume all
+                  https://social.briggo.in/ disclaims any responsibility for the
+                  accuracy of the content appearing at, linked to on, or
+                  mentioned on https://social.briggo.in/. Visitors assume all
                   risk relating to viewing, reading, using, or relying upon this
                   information. Unless you have otherwise formed an express
                   contract to the contrary with us, you have no right to rely on
@@ -224,7 +223,7 @@ const TermsPage = () => {
                     visitor subsequently communicates with from corrupting code
                     or data that is inadvertently passed to the visitor's
                     computer. Again, visitor views and interacts with
-                    https://basic.devspunch.net/, or banners or pop-ups or
+                    https://social.briggo.in/, or banners or pop-ups or
                     advertising displayed thereon, at his own risk.
                   </p>
                 </div>
@@ -236,10 +235,10 @@ const TermsPage = () => {
                 DISCLAIMER FOR HARM CAUSED BY DOWNLOADS
               </h2>
               <p className="text-[#919191] leading-relaxed">
-                Visitor downloads information from https://basic.devspunch.net/
-                at his own risk. Website makes no warranty that downloads are
-                free of corrupting computer codes, including, but not limited
-                to, viruses and worms.
+                Visitor downloads information from https://social.briggo.in/ at
+                his own risk. Website makes no warranty that downloads are free
+                of corrupting computer codes, including, but not limited to,
+                viruses and worms.
               </p>
             </section>
 
@@ -249,7 +248,7 @@ const TermsPage = () => {
               </h2>
               <p className="text-[#919191] leading-relaxed">
                 By viewing, using, or interacting in any manner with
-                https://basic.devspunch.net/, including banners, advertising, or
+                https://social.briggo.in/, including banners, advertising, or
                 pop-ups, downloads, and as a condition of the website to allow
                 his lawful viewing, Visitor forever waives all right to claims
                 of damage of any and all description based on any causal factor
@@ -276,8 +275,8 @@ const TermsPage = () => {
               <p className="text-[#919191] leading-relaxed">
                 Visitor agrees that in the event he causes damage to us or a
                 third party as a result of or relating to the use of
-                https://basic.devspunch.net/, Visitor will indemnify us for,
-                and, if applicable, defend us against, any claims for damages.
+                https://social.briggo.in/, Visitor will indemnify us for, and,
+                if applicable, defend us against, any claims for damages.
               </p>
             </section>
 
@@ -330,10 +329,10 @@ const TermsPage = () => {
                 from the American Arbitration Association, 335 Madison Avenue,
                 Floor 10, New York, New York, 10017-4605. Hearing will take
                 place in the city or county of the owner of
-                https://basic.devspunch.net/. In no case shall the viewer,
-                visitor, member, subscriber or customer have the right to go to
-                court or have a jury trial. Viewer, visitor, member, subscriber
-                or customer will not have the right to engage in pre-trial
+                https://social.briggo.in/. In no case shall the viewer, visitor,
+                member, subscriber or customer have the right to go to court or
+                have a jury trial. Viewer, visitor, member, subscriber or
+                customer will not have the right to engage in pre-trial
                 discovery except as provided in the rules; you will not have the
                 right to participate as a representative or member of any class
                 of claimants pertaining to any claim subject to arbitration; the
@@ -357,7 +356,7 @@ const TermsPage = () => {
                 information of the web owner unless otherwise here specified. In
                 the event that litigation is in a federal court, the proper
                 court shall be the closest federal court to the owner of
-                https://basic.devspunch.net/'s address.
+                https://social.briggo.in/'s address.
               </p>
             </section>
 
@@ -368,7 +367,7 @@ const TermsPage = () => {
               <p className="text-[#919191] leading-relaxed">
                 Viewer, visitor, member, subscriber or customer agrees that the
                 applicable law to be applied shall, in all cases, be that of the
-                state of the owner of https://basic.devspunch.net/.
+                state of the owner of https://social.briggo.in/.
               </p>
             </section>
           </div>
