@@ -9,6 +9,7 @@ import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import TermsPage from "./pages/terms";
 import RegisterPage from "./pages/register";
+import ContentPostingPage from "./pages/content-posting";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -25,6 +26,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/posts" element={<PostsPage />} />
+        <Route path="/content-posting" element={<ContentPostingPage />} />
       </Routes>
     </Router>
     // </UserProvider>

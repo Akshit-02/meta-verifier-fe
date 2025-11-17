@@ -168,6 +168,7 @@ const PostsPage = () => {
   const menuItems = [
     { id: "dashboard", icon: "📊", label: "Dashboard" },
     { id: "posts", icon: "📸", label: "Posts" },
+    { id: "content-posting", icon: "📝", label: "Content Posting" },
   ];
 
   const handleLogout = async () => {

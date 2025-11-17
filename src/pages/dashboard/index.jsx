@@ -57,7 +57,7 @@ const DashboardPage = () => {
   const fetchUser = async () => {
     try {
       setLoading(true);
-      await sendWhatsappMessageApi({ userId: user?.id });
+      // await sendWhatsappMessageApi({ userId: user?.id });
       const currentUser = await getCurrentUser();
       console.log("currentUser", currentUser);
       const userRes = await manageUserApi("GET", {
@@ -89,6 +89,7 @@ const DashboardPage = () => {
   const menuItems = [
     { id: "dashboard", icon: "📊", label: "Dashboard" },
     { id: "posts", icon: "📸", label: "Posts" },
+    { id: "content-posting", icon: "📝", label: "Content Posting" },
   ];
 
   const handleLogout = async () => {

@@ -35,7 +35,7 @@ const LoginPage = () => {
           // await dispatch(fetchUser(currentUser.username));
 
           navigate("/dashboard");
-          await sendWhatsappMessageApi({ userId: currentUser.username });
+          // await sendWhatsappMessageApi({ userId: currentUser.username });
         } catch (error) {
           console.error("Error during login:", error);
         }
@@ -68,7 +68,7 @@ const LoginPage = () => {
           // await dispatch(fetchUser(currentUser.username));
 
           navigate("/dashboard");
-          await sendWhatsappMessageApi({ userId: currentUser.username });
+          // await sendWhatsappMessageApi({ userId: currentUser.username });
         } catch (error) {
           console.error("Error during password confirmation:", error);
         }
@@ -226,7 +226,7 @@ const LoginPage = () => {
       ) {
         // Successfully verified
         navigate("/dashboard");
-        await sendWhatsappMessageApi({ userId: confirmResponse?.user?.id });
+        // await sendWhatsappMessageApi({ userId: confirmResponse?.user?.id });
         setSession(null);
 
         // Check for campaign invite link

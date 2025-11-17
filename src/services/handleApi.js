@@ -4,6 +4,7 @@ import {
   linkInstagramAccount,
   manageUser,
   postCommentOnInstagramAccount,
+  publishInstagramContent,
   sendWhatsappMessage,
 } from "./api";
 
@@ -88,6 +89,23 @@ export const sendWhatsappMessageApi = async (data) => {
       authMode: "userPool",
     });
     return response?.data?.sendWhatsappMessage;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const publishInstagramContentApi = async (userId, media) => {
+  try {
+    const response = await client.graphql({
+      query: publishInstagramContent,
+      variables: {
+        userId: userId,
+        media: media,
+      },
+      authMode: "userPool",
+    });
+    return response?.data?.publishInstagramContent;
   } catch (error) {
     console.error("Error:", error);
     throw error;

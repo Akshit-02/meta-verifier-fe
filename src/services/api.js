@@ -123,3 +123,17 @@ export const sendWhatsappMessage = /* GraphQL */ `
     }
   }
 `;
+
+export const publishInstagramContent = /* GraphQL */ `
+  mutation PublishInstagramContent(
+    $userId: String!
+    $media: PublishInstagramContentInput!
+  ) {
+    publishInstagramContent(userId: $userId, media: $media) {
+      success
+      message
+      mediaId
+      permalink
+    }
+  }
+`;
