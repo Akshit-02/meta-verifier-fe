@@ -7,6 +7,7 @@ import {
   publishInstagramContentApi,
 } from "../../services/handleApi";
 import { getMediaUrl } from "../../utils/helper";
+import { ContentIcon, DashboardIcon, PostsIcon } from "../../assets/icons";
 
 const ContentPostingPage = () => {
   const navigate = useNavigate();
@@ -346,9 +347,9 @@ const ContentPostingPage = () => {
   };
 
   const menuItems = [
-    { id: "dashboard", icon: "📊", label: "Dashboard" },
-    { id: "posts", icon: "📸", label: "Posts" },
-    { id: "content-posting", icon: "📝", label: "Content Posting" },
+    { id: "dashboard", icon: <DashboardIcon />, label: "Dashboard" },
+    { id: "posts", icon: <PostsIcon />, label: "Posts" },
+    { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
   ];
 
   const handleLogout = async () => {
@@ -443,7 +444,7 @@ const ContentPostingPage = () => {
                   : "text-[#919191] hover:bg-[#F1F1F1] hover:text-[#2B2B2B]"
               }`}
             >
-              <span className="text-2xl">{item.icon}</span>
+              {item.icon}
               {sidebarOpen && <span className="font-medium">{item.label}</span>}
             </a>
           ))}

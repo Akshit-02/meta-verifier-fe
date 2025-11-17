@@ -10,6 +10,7 @@ import {
   getIgMediaComments,
   getIgMediaInsights,
 } from "../../services/igApis";
+import { ContentIcon, DashboardIcon, PostsIcon } from "../../assets/icons";
 
 const PostsPage = () => {
   const navigate = useNavigate();
@@ -166,9 +167,9 @@ const PostsPage = () => {
   };
 
   const menuItems = [
-    { id: "dashboard", icon: "📊", label: "Dashboard" },
-    { id: "posts", icon: "📸", label: "Posts" },
-    { id: "content-posting", icon: "📝", label: "Content Posting" },
+    { id: "dashboard", icon: <DashboardIcon />, label: "Dashboard" },
+    { id: "posts", icon: <PostsIcon />, label: "Posts" },
+    { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
   ];
 
   const handleLogout = async () => {
