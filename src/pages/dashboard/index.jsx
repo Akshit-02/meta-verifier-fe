@@ -21,6 +21,7 @@ const DashboardPage = () => {
   const [igAccountInfo, setIgAccountInfo] = useState(null);
   const [igAccountMetricData, setIgAccountMetricData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const searchParams = new URLSearchParams(window.location.search);
   const code = searchParams.get("code");
 
@@ -46,7 +47,10 @@ const DashboardPage = () => {
       });
       console.log("linkRes", linkRes);
       if (linkRes.success) {
-        fetchUser();
+        setShowSuccessModal(true);
+        // Remove code from URL
+        window.history.replaceState({}, document.title, "/dashboard");
+        await fetchUser();
       }
     } catch (error) {
       console.error("Error connecting Instagram:", error);
@@ -58,7 +62,6 @@ const DashboardPage = () => {
   const fetchUser = async () => {
     try {
       setLoading(true);
-      // await sendWhatsappMessageApi({ userId: user?.id });
       const currentUser = await getCurrentUser();
       console.log("currentUser", currentUser);
       const userRes = await manageUserApi("GET", {
@@ -107,8 +110,68 @@ const DashboardPage = () => {
 
   console.log("igAccountInfo", igAccountInfo);
   console.log("igAccountMetricData", igAccountMetricData);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#F1F1F1] to-[#D4D4D4] flex">
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+          <div className="bg-white rounded-3xl shadow-2xl border border-[#D4D4D4] p-8 max-w-md w-full mx-4 animate-scale-in">
+            <div className="text-center">
+              {/* Success Icon */}
+              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center mx-auto mb-6 animate-bounce-once">
+                <svg
+                  className="w-10 h-10 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={3}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+
+              {/* Success Message */}
+              <h2 className="text-3xl font-bold text-[#2B2B2B] mb-3">
+                Instagram Connected!
+              </h2>
+              <p className="text-[#919191] text-lg mb-6">
+                Your Instagram account has been successfully linked. You can now
+                start automating your growth!
+              </p>
+
+              {/* Features List */}
+              <div className="bg-[#F1F1F1] rounded-2xl p-4 mb-6 text-left space-y-3">
+                {[
+                  { icon: "⚡", text: "Auto-reply to comments & DMs" },
+                  { icon: "📊", text: "Track engagement metrics" },
+                  { icon: "🚀", text: "Automate content posting" },
+                ].map((feature, index) => (
+                  <div key={index} className="flex items-center gap-3">
+                    <span className="text-2xl">{feature.icon}</span>
+                    <span className="text-[#2B2B2B] font-medium">
+                      {feature.text}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                className="w-full px-6 py-3 bg-gradient-to-r from-[#2B2B2B] to-[#919191] text-white rounded-xl font-semibold hover:shadow-lg hover:scale-105 transition-all duration-300"
+              >
+                Get Started
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Sidebar */}
       <aside
         className={`${
@@ -444,106 +507,6 @@ const DashboardPage = () => {
                 </div>
               )}
 
-              {/* Stats Grid */}
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[
-                  {
-                    label: "Total Followers",
-                    value: (
-                      user?.instagramDetails?.followersCount || 0
-                    ).toLocaleString(),
-                    icon: "👥",
-                    color: "from-[#2B2B2B] to-[#919191]",
-                  },
-                  {
-                    label: "Total Posts",
-                    value: user?.instagramDetails?.mediaCount || 0,
-                    icon: "📸",
-                    color: "from-[#919191] to-[#D4D4D4]",
-                  },
-                  {
-                    label: "Following",
-                    value: (
-                      user?.instagramDetails?.followsCount || 0
-                    ).toLocaleString(),
-                    icon: "➕",
-                    color: "from-[#2B2B2B] to-[#D4D4D4]",
-                  },
-                ].map((stat, index) => (
-                  <div
-                    key={index}
-                    className="bg-white rounded-2xl shadow-lg border border-[#D4D4D4] p-6 hover:scale-105 transition-transform duration-300"
-                  >
-                    <div
-                      className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-xl flex items-center justify-center text-2xl mb-4 shadow-lg`}
-                    >
-                      {stat.icon}
-                    </div>
-                    <p className="text-[#919191] text-sm mb-1">{stat.label}</p>
-                    <p className="text-3xl font-bold text-[#2B2B2B]">
-                      {stat.value}
-                    </p>
-                  </div>
-                ))}
-              </div> */}
-
-              {/* Quick Actions */}
-              {/* <div className="bg-white rounded-3xl shadow-lg border border-[#D4D4D4] p-8">
-                <h2 className="text-2xl font-bold text-[#2B2B2B] mb-6">
-                  Quick Actions
-                </h2>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {[
-                    {
-                      label: "View Posts",
-                      icon: "📸",
-                      action: () => (window.location.href = "/posts"),
-                    },
-                    {
-                      label: "Manage Comments",
-                      icon: "💬",
-                      action: () => alert("Coming soon"),
-                    },
-                    {
-                      label: "Send DMs",
-                      icon: "📩",
-                      action: () => alert("Coming soon"),
-                    },
-                    {
-                      label: "View Analytics",
-                      icon: "📊",
-                      action: () => alert("Coming soon"),
-                    },
-                  ].map((action, index) => (
-                    <button
-                      key={index}
-                      onClick={action.action}
-                      className="w-full flex items-center justify-between p-4 bg-[#F1F1F1] hover:bg-gradient-to-r hover:from-[#2B2B2B] hover:to-[#919191] hover:text-white rounded-xl transition-all duration-300 group"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span className="text-2xl">{action.icon}</span>
-                        <span className="font-medium text-[#2B2B2B] group-hover:text-white">
-                          {action.label}
-                        </span>
-                      </div>
-                      <svg
-                        className="w-5 h-5 text-[#919191] group-hover:text-white"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M9 5l7 7-7 7"
-                        />
-                      </svg>
-                    </button>
-                  ))}
-                </div>
-              </div> */}
-
               {/* Growth Chart Placeholder */}
               <div className="bg-white rounded-3xl shadow-lg border border-[#D4D4D4] p-8">
                 <h2 className="text-2xl font-bold text-[#2B2B2B] mb-6">
@@ -565,6 +528,36 @@ const DashboardPage = () => {
           )}
         </div>
       </main>
+
+      <style>{`
+        @keyframes scale-in {
+          from {
+            transform: scale(0.9);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+        
+        @keyframes bounce-once {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        
+        .animate-scale-in {
+          animation: scale-in 0.3s ease-out;
+        }
+        
+        .animate-bounce-once {
+          animation: bounce-once 0.6s ease-in-out;
+        }
+      `}</style>
     </div>
   );
 };
