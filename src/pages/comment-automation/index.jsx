@@ -6,7 +6,12 @@ import {
   manageIgMediaAutomationApi,
 } from "../../services/handleApi";
 import { getAllIgMedia } from "../../services/igApis";
-import { ContentIcon, DashboardIcon, PostsIcon } from "../../assets/icons";
+import {
+  CommentIcon,
+  ContentIcon,
+  DashboardIcon,
+  PostsIcon,
+} from "../../assets/icons";
 
 const CommentAutomationPage = () => {
   const navigate = useNavigate();
@@ -170,7 +175,11 @@ const CommentAutomationPage = () => {
     { id: "dashboard", icon: <DashboardIcon />, label: "Dashboard" },
     { id: "posts", icon: <PostsIcon />, label: "Posts" },
     { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
-    { id: "comment-automation", icon: "🤖", label: "Comment Automation" },
+    {
+      id: "comment-automation",
+      icon: <CommentIcon />,
+      label: "Comment Automation",
+    },
   ];
 
   const handleLogout = async () => {

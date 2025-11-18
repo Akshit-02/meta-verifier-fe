@@ -11,7 +11,12 @@ import {
   getIgAccountInfo,
   getIgAccountMetricData,
 } from "../../services/igApis";
-import { ContentIcon, DashboardIcon, PostsIcon } from "../../assets/icons";
+import {
+  CommentIcon,
+  ContentIcon,
+  DashboardIcon,
+  PostsIcon,
+} from "../../assets/icons";
 
 const DashboardPage = () => {
   const navigate = useNavigate();
@@ -94,6 +99,11 @@ const DashboardPage = () => {
     { id: "dashboard", icon: <DashboardIcon />, label: "Dashboard" },
     { id: "posts", icon: <PostsIcon />, label: "Posts" },
     { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
+    {
+      id: "comment-automation",
+      icon: <CommentIcon />,
+      label: "Comment Automation",
+    },
   ];
 
   const handleLogout = async () => {

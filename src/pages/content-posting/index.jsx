@@ -7,7 +7,12 @@ import {
   publishInstagramContentApi,
 } from "../../services/handleApi";
 import { getMediaUrl } from "../../utils/helper";
-import { ContentIcon, DashboardIcon, PostsIcon } from "../../assets/icons";
+import {
+  CommentIcon,
+  ContentIcon,
+  DashboardIcon,
+  PostsIcon,
+} from "../../assets/icons";
 
 const ContentPostingPage = () => {
   const navigate = useNavigate();
@@ -350,8 +355,12 @@ const ContentPostingPage = () => {
     { id: "dashboard", icon: <DashboardIcon />, label: "Dashboard" },
     { id: "posts", icon: <PostsIcon />, label: "Posts" },
     { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
+    {
+      id: "comment-automation",
+      icon: <CommentIcon />,
+      label: "Comment Automation",
+    },
   ];
-
   const handleLogout = async () => {
     try {
       await signOut();
