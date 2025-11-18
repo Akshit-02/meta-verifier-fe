@@ -101,16 +101,11 @@ export const getMediaCommentsFromInstagramAccount = /* GraphQL */ `
               isHidden
               timestamp
               likeCount
-              __typename
             }
-            __typename
           }
-          __typename
         }
-        __typename
       }
       nextPageToken
-      __typename
     }
   }
 `;
@@ -134,6 +129,56 @@ export const publishInstagramContent = /* GraphQL */ `
       message
       mediaId
       permalink
+    }
+  }
+`;
+
+export const manageIgMediaAutomation = /* GraphQL */ `
+  mutation ManageIgMediaAutomation(
+    $action: API_ACTIONS!
+    $input: IgMediaAutomationInput!
+  ) {
+    manageIgMediaAutomation(action: $action, input: $input) {
+      success
+      message
+      items {
+        id
+        userId
+        mediaType
+        mediaUrl
+        postedAt
+        isActive
+        automationType
+        automationTrigger
+        keywords
+        replyCommentText
+        replyDMType
+        replyDMText
+        replyDMMediaUrl
+        replyDMCards {
+          mediaUrl
+          title
+          buttons {
+            title
+            link
+          }
+        }
+        mediaDetails {
+          id
+          caption
+          mediaType
+          mediaProductType
+          mediaUrl
+          thumbnailUrl
+          permalink
+          timestamp
+          commentsCount
+          likeCount
+          shortcode
+        }
+        createdAt
+        updatedAt
+      }
     }
   }
 `;

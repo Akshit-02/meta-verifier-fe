@@ -2,6 +2,7 @@ import { generateClient } from "aws-amplify/api";
 import {
   getMediaCommentsFromInstagramAccount,
   linkInstagramAccount,
+  manageIgMediaAutomation,
   manageUser,
   postCommentOnInstagramAccount,
   publishInstagramContent,
@@ -106,6 +107,23 @@ export const publishInstagramContentApi = async (userId, media) => {
       authMode: "userPool",
     });
     return response?.data?.publishInstagramContent;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const manageIgMediaAutomationApi = async (action, data) => {
+  try {
+    const response = await client.graphql({
+      query: manageIgMediaAutomation,
+      variables: {
+        action: action,
+        input: data,
+      },
+      authMode: "userPool",
+    });
+    return response?.data?.manageIgMediaAutomation;
   } catch (error) {
     console.error("Error:", error);
     throw error;

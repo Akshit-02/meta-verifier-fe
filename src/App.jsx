@@ -1,15 +1,16 @@
 import { Amplify } from "aws-amplify";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import awsmobile from "./aws-export";
+import CommentAutomationPage from "./pages/comment-automation";
+import ContentPostingPage from "./pages/content-posting";
 import DashboardPage from "./pages/dashboard";
 import GDPRPage from "./pages/gdpr";
 import LandingPage from "./pages/home";
 import LoginPage from "./pages/login";
 import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
-import TermsPage from "./pages/terms";
 import RegisterPage from "./pages/register";
-import ContentPostingPage from "./pages/content-posting";
+import TermsPage from "./pages/terms";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/content-posting" element={<ContentPostingPage />} />
+        <Route path="/comment-automation" element={<CommentAutomationPage />} />
       </Routes>
     </Router>
     // </UserProvider>
