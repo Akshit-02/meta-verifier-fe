@@ -11,6 +11,7 @@ import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import RegisterPage from "./pages/register";
 import TermsPage from "./pages/terms";
+import DMAutomationPage from "./pages/dm-automation";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/content-posting" element={<ContentPostingPage />} />
         <Route path="/comment-automation" element={<CommentAutomationPage />} />
+        <Route path="/dm-automation" element={<DMAutomationPage />} />
       </Routes>
     </Router>
     // </UserProvider>

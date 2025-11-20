@@ -182,3 +182,24 @@ export const manageIgMediaAutomation = /* GraphQL */ `
     }
   }
 `;
+
+export const manageIgDMAutomation = /* GraphQL */ `
+  mutation ManageIgDMAutomation(
+    $action: API_ACTIONS!
+    $input: IgDMAutomationInput!
+  ) {
+    manageIgDMAutomation(action: $action, input: $input) {
+      success
+      message
+      items {
+        id
+        userId
+        igAccountId
+        triggerText
+        replyText
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

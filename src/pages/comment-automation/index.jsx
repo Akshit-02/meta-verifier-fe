@@ -180,6 +180,11 @@ const CommentAutomationPage = () => {
       icon: <CommentIcon />,
       label: "Comment Automation",
     },
+    {
+      id: "dm-automation",
+      icon: <CommentIcon />,
+      label: "DM Automation",
+    },
   ];
 
   const handleLogout = async () => {
