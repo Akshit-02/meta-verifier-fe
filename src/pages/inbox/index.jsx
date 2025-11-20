@@ -18,55 +18,7 @@ const InstagramMessagesPage = () => {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-
-  // Mock data for demonstration
-  const mockConversations = [
-    {
-      id: "conv_1",
-      userId: "user_1",
-      username: "sarah_designs",
-      profilePic: "https://i.pravatar.cc/150?img=1",
-      lastMessage: "Thanks for the quick response!",
-      timestamp: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
-      unread: true,
-    },
-    {
-      id: "conv_2",
-      userId: "user_2",
-      username: "john_photographer",
-      profilePic: "https://i.pravatar.cc/150?img=3",
-      lastMessage: "What are your prices?",
-      timestamp: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
-      unread: true,
-    },
-    {
-      id: "conv_3",
-      userId: "user_3",
-      username: "emma_creative",
-      profilePic: "https://i.pravatar.cc/150?img=5",
-      lastMessage: "Perfect! I'll take it",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      unread: false,
-    },
-    {
-      id: "conv_4",
-      userId: "user_4",
-      username: "mike_studio",
-      profilePic: "https://i.pravatar.cc/150?img=8",
-      lastMessage: "Is this still available?",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-      unread: false,
-    },
-    {
-      id: "conv_5",
-      userId: "user_5",
-      username: "lisa_marketing",
-      profilePic: "https://i.pravatar.cc/150?img=9",
-      lastMessage: "Great! Looking forward to it",
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
-      unread: false,
-    },
-  ];
+  const [loadingConversations, setLoadingConversations] = useState(false);
 
   const mockMessages = {
     conv_1: [
@@ -135,6 +87,12 @@ const InstagramMessagesPage = () => {
     fetchUser();
   }, []);
 
+  useEffect(() => {
+    if (user) {
+      fetchConversations();
+    }
+  }, [user]);
+
   const fetchUser = async () => {
     try {
       setLoading(true);
@@ -145,12 +103,51 @@ const InstagramMessagesPage = () => {
       if (userRes.success) {
         setUser(userRes.items?.[0]);
         // Load conversations
-        setConversations(mockConversations);
+        // setConversations(mockConversations);
       }
     } catch (error) {
       console.error("Error fetching user:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchConversations = async () => {
+    if (!user?.instagramDetails?.instagramRefreshToken) {
+      console.error("No Instagram access token found");
+      return;
+    }
+    setLoadingConversations(true);
+    try {
+      const accessToken = user.instagramDetails.instagramRefreshToken;
+      const url = `https://graph.instagram.com/me/conversations?fields=id,participants&access_token=${accessToken}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.error) {
+        console.error("Error fetching conversations:", data.error);
+        return;
+      }
+      console.log("Conversations data:", data);
+      // Transform API data to match our UI structure
+      const transformedConversations = (data.data || []).map((conv) => {
+        const participant = conv.participants?.data?.[1];
+        return {
+          id: conv.id,
+          userId: participant?.id || "",
+          username: participant?.username || "Unknown User",
+          //   profilePic:
+          //     participant?.profile_pic || "https://i.pravatar.cc/150?img=1",
+          //   lastMessage: "No messages yet",
+          //   timestamp: new Date().toISOString(),
+          //   unread: false,
+        };
+      });
+      setConversations(transformedConversations);
+    } catch (error) {
+      console.error("Error fetching conversations:", error);
+    } finally {
+      setLoadingConversations(false);
     }
   };
 
@@ -352,13 +349,13 @@ const InstagramMessagesPage = () => {
                 >
                   <div className="relative">
                     <img
-                      src={conversation.profilePic}
+                      src="https://i.pravatar.cc/150?img=1"
                       alt={conversation.username}
                       className="w-14 h-14 rounded-full object-cover"
                     />
-                    {conversation.unread && (
+                    {/* {conversation.unread && (
                       <div className="absolute bottom-0 right-0 w-3 h-3 bg-blue-500 rounded-full border-2 border-white"></div>
-                    )}
+                    )} */}
                   </div>
                   <div className="flex-1 text-left min-w-0">
                     <div className="flex items-center justify-between mb-1">
@@ -369,9 +366,9 @@ const InstagramMessagesPage = () => {
                       >
                         {conversation.username}
                       </p>
-                      <span className="text-xs text-[#919191] ml-2 flex-shrink-0">
+                      {/* <span className="text-xs text-[#919191] ml-2 flex-shrink-0">
                         {formatTime(conversation.timestamp)}
-                      </span>
+                      </span> */}
                     </div>
                     <p
                       className={`text-sm ${
