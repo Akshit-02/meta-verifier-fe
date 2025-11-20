@@ -251,6 +251,11 @@ const InstagramMessagesPage = () => {
       label: "Comment Automation",
     },
     {
+      id: "dm-automation",
+      icon: <CommentIcon />,
+      label: "DM Automation",
+    },
+    {
       id: "inbox",
       icon: <CommentIcon />,
       label: "Inbox",
