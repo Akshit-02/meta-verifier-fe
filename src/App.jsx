@@ -4,14 +4,15 @@ import awsmobile from "./aws-export";
 import CommentAutomationPage from "./pages/comment-automation";
 import ContentPostingPage from "./pages/content-posting";
 import DashboardPage from "./pages/dashboard";
+import DMAutomationPage from "./pages/dm-automation";
 import GDPRPage from "./pages/gdpr";
 import LandingPage from "./pages/home";
+import InstagramMessagesPage from "./pages/inbox";
 import LoginPage from "./pages/login";
 import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import RegisterPage from "./pages/register";
 import TermsPage from "./pages/terms";
-import DMAutomationPage from "./pages/dm-automation";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -31,6 +32,7 @@ function App() {
         <Route path="/content-posting" element={<ContentPostingPage />} />
         <Route path="/comment-automation" element={<CommentAutomationPage />} />
         <Route path="/dm-automation" element={<DMAutomationPage />} />
+        <Route path="/inbox" element={<InstagramMessagesPage />} />
       </Routes>
     </Router>
     // </UserProvider>

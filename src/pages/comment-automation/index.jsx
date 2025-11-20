@@ -185,6 +185,11 @@ const CommentAutomationPage = () => {
       icon: <CommentIcon />,
       label: "DM Automation",
     },
+    {
+      id: "inbox",
+      icon: <CommentIcon />,
+      label: "Inbox",
+    },
   ];
 
   const handleLogout = async () => {
