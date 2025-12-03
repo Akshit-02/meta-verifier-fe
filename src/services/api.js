@@ -203,3 +203,28 @@ export const manageIgDMAutomation = /* GraphQL */ `
     }
   }
 `;
+
+export const manageIgPostSchedule = /* GraphQL */ `
+  mutation ManageIgPostSchedule(
+    $action: API_ACTIONS!
+    $input: IgPostScheduleInput!
+  ) {
+    manageIgPostSchedule(action: $action, input: $input) {
+      success
+      message
+      items {
+        id
+        userId
+        igAccountId
+        scheduledAt
+        type
+        imageUrl
+        videoUrl
+        thumbnailUrl
+        caption
+        createdAt
+        updatedAt
+      }
+    }
+  }
+`;

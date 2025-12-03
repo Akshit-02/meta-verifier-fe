@@ -154,6 +154,11 @@ const DMAutomationPage = () => {
     { id: "posts", icon: <PostsIcon />, label: "Posts" },
     { id: "content-posting", icon: <ContentIcon />, label: "Content Posting" },
     {
+      id: "content-scheduling",
+      icon: <ContentIcon />,
+      label: "Content Scheduling",
+    },
+    {
       id: "comment-automation",
       icon: <CommentIcon />,
       label: "Comment Automation",

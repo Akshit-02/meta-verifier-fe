@@ -3,6 +3,7 @@ import { uploadData } from "aws-amplify/storage";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
+  manageIgPostScheduleApi,
   manageUserApi,
   publishInstagramContentApi,
 } from "../../services/handleApi";
@@ -14,10 +15,10 @@ import {
   PostsIcon,
 } from "../../assets/icons";
 
-const ContentPostingPage = () => {
+const ContentSchedulingPage = () => {
   const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeTab, setActiveTab] = useState("content-posting");
+  const [activeTab, setActiveTab] = useState("content-scheduling");
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
 
@@ -38,6 +39,8 @@ const ContentPostingPage = () => {
   const [scheduledTime, setScheduledTime] = useState("");
   const [publishSuccess, setPublishSuccess] = useState(false);
   const [publishedData, setPublishedData] = useState(null);
+  const [scheduledPosts, setScheduledPosts] = useState([]);
+  const [loadingScheduledPosts, setLoadingScheduledPosts] = useState(false);
 
   const fileInputRef = useRef(null);
   const videoRefs = useRef({});
@@ -45,6 +48,31 @@ const ContentPostingPage = () => {
   useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchScheduledPosts();
+    }
+  }, [user]);
+
+  const fetchScheduledPosts = async () => {
+    if (!user?.id) return;
+
+    setLoadingScheduledPosts(true);
+    try {
+      const response = await manageIgPostScheduleApi("LIST", {
+        userId: user.id,
+      });
+
+      if (response?.success) {
+        setScheduledPosts(response.items || []);
+      }
+    } catch (error) {
+      console.error("Error fetching scheduled posts:", error);
+    } finally {
+      setLoadingScheduledPosts(false);
+    }
+  };
 
   const fetchUser = async () => {
     try {
@@ -249,81 +277,88 @@ const ContentPostingPage = () => {
         setUploadProgress((completedUploads / totalUploads) * 100);
       }
 
-      // Upload thumbnail
+      // Upload thumbnail if video
       let thumbnailResult = null;
-      if (selectedThumbnail) {
-        const progressCallback = ({ transferredBytes, totalBytes }) => {
-          if (totalBytes) {
-            const fileProgress = (transferredBytes / totalBytes) * 100;
-            const overallProgress =
-              ((completedUploads + fileProgress / 100) / totalUploads) * 100;
-            setUploadProgress(Math.min(overallProgress, 100));
-          }
-        };
+      if (
+        mediaType === "VIDEO" ||
+        (mediaType === "CAROUSEL" && files.some((f) => f.type === "VIDEO"))
+      ) {
+        if (selectedThumbnail) {
+          const progressCallback = ({ transferredBytes, totalBytes }) => {
+            if (totalBytes) {
+              const fileProgress = (transferredBytes / totalBytes) * 100;
+              const overallProgress =
+                ((completedUploads + fileProgress / 100) / totalUploads) * 100;
+              setUploadProgress(Math.min(overallProgress, 100));
+            }
+          };
 
-        thumbnailResult = await uploadToS3(
-          selectedThumbnail,
-          "thumbnail",
-          progressCallback
-        );
-        completedUploads++;
-      } else {
-        const firstVideo = files.find((f) => f.type === "VIDEO");
-        if (firstVideo && videoThumbnails[firstVideo.id]) {
-          const thumbnailFile = dataURLtoFile(
-            videoThumbnails[firstVideo.id],
-            `${firstVideo.id}-auto.jpg`
-          );
           thumbnailResult = await uploadToS3(
-            thumbnailFile,
+            selectedThumbnail,
             "thumbnail",
-            () => {}
+            progressCallback
           );
+          completedUploads++;
+        } else {
+          const firstVideo = files.find((f) => f.type === "VIDEO");
+          if (firstVideo && videoThumbnails[firstVideo.id]) {
+            const thumbnailFile = dataURLtoFile(
+              videoThumbnails[firstVideo.id],
+              `${firstVideo.id}-auto.jpg`
+            );
+            thumbnailResult = await uploadToS3(
+              thumbnailFile,
+              "thumbnail",
+              () => {}
+            );
+          }
         }
       }
 
       setUploadProgress(100);
 
-      // Prepare payload
+      // Create ISO date string for scheduledAt
+      let scheduledAtISO = null;
+      if (!postNow && scheduledDate && scheduledTime) {
+        const scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`);
+        scheduledAtISO = scheduledDateTime.toISOString();
+      }
+
+      // Prepare payload based on media type
       const payload = {
+        id: Date.now().toString(),
+        userId: user?.id,
+        igAccountId: user?.instagramDetails?.instagramUserId,
+        scheduledAt: scheduledAtISO,
+        type: mediaType,
         caption,
-        mediaType,
-        mediaUrl:
-          mediaType !== "CAROUSEL" ? getMediaUrl(uploadResults[0].s3Key) : null,
-        thumbnailUrl: thumbnailResult?.path
-          ? getMediaUrl(thumbnailResult.path)
-          : null,
-        children:
-          mediaType === "CAROUSEL"
-            ? uploadResults.map((result) => ({
-                mediaType: result.type,
-                mediaUrl: getMediaUrl(result.s3Key),
-              }))
-            : [],
       };
 
-      if (location) {
-        payload.locationId = location;
+      // Add media URLs based on type
+      if (mediaType === "IMAGE") {
+        payload.imageUrl = getMediaUrl(uploadResults[0].s3Key);
+      } else if (mediaType === "VIDEO") {
+        payload.videoUrl = getMediaUrl(uploadResults[0].s3Key);
+        if (thumbnailResult?.path) {
+          payload.thumbnailUrl = getMediaUrl(thumbnailResult.path);
+        }
       }
 
       console.log("Publishing payload:", payload);
 
-      if (postNow) {
-        const response = await publishInstagramContentApi(user?.id, payload);
+      const response = await manageIgPostScheduleApi("CREATE", payload);
 
-        if (response.success) {
-          setPublishedData({
-            mediaId: response.mediaId,
-            permalink: response.permalink,
-            message: response.message,
-          });
-          setPublishSuccess(true);
-        } else {
-          alert("❌ " + response.message);
-        }
+      if (response.success) {
+        setPublishedData({
+          mediaId: response.mediaId,
+          permalink: response.permalink,
+          message:
+            response.message ||
+            (postNow ? "Published successfully!" : "Scheduled successfully!"),
+        });
+        setPublishSuccess(true);
       } else {
-        // Handle scheduling (implement your scheduling API)
-        alert("Scheduling feature coming soon!");
+        alert("❌ " + response.message);
       }
     } catch (error) {
       console.error("Publish failed:", error);
@@ -360,6 +395,7 @@ const ContentPostingPage = () => {
       icon: <ContentIcon />,
       label: "Content Scheduling",
     },
+
     {
       id: "comment-automation",
       icon: <CommentIcon />,
@@ -490,7 +526,7 @@ const ContentPostingPage = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-[#2B2B2B]">
-                Content Posting
+                Content Scheduling
               </h1>
             </div>
             <button
@@ -969,6 +1005,55 @@ const ContentPostingPage = () => {
             </div>
           )}
         </div>
+
+        {user?.instagramDetails?.instagramRefreshToken &&
+          scheduledPosts.length > 0 && (
+            <div className="mt-8 bg-white rounded-3xl shadow-lg border border-[#D4D4D4] p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-[#2B2B2B]">
+                  Scheduled Posts
+                </h2>
+                <button
+                  // onClick={fetchScheduledPosts}
+                  // disabled={loadingScheduledPosts}
+                  className="px-4 py-2 bg-[#F1F1F1] rounded-lg hover:bg-[#D4D4D4] transition-colors"
+                >
+                  Upload
+                </button>
+                <button
+                  onClick={fetchScheduledPosts}
+                  disabled={loadingScheduledPosts}
+                  className="px-4 py-2 bg-[#F1F1F1] rounded-lg hover:bg-[#D4D4D4] transition-colors"
+                >
+                  {loadingScheduledPosts ? "Refreshing..." : "Refresh"}
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {scheduledPosts.map((post) => (
+                  <div
+                    key={post.id}
+                    className="border-2 border-[#D4D4D4] rounded-xl p-4"
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-xs font-semibold">
+                        {post.type}
+                      </span>
+                      <span className="text-xs text-[#919191]">
+                        {new Date(post.scheduledAt).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#2B2B2B] line-clamp-3 mb-3">
+                      {post.caption}
+                    </p>
+                    <div className="text-xs text-[#919191]">
+                      📅 {new Date(post.scheduledAt).toLocaleString()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
       </main>
 
       {/* Success Modal */}
@@ -976,99 +1061,22 @@ const ContentPostingPage = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden">
             <div className="p-12 text-center">
-              {/* Success Icon */}
               <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-4xl">🎉</span>
+                <span className="text-4xl">{postNow ? "🎉" : "📅"}</span>
               </div>
 
-              {/* Success Message */}
               <h2 className="text-xl font-bold text-[#2B2B2B] mb-4">
-                Published Successfully!
+                {postNow
+                  ? "Published Successfully!"
+                  : "Scheduled Successfully!"}
               </h2>
               <p className="text-lg text-[#919191] mb-6">
-                {publishedData.message ||
-                  "Your content has been published to Instagram"}
+                {postNow
+                  ? "Your content has been published to Instagram"
+                  : "Your content has been scheduled and will be published automatically"}
               </p>
 
-              {/* Post Details */}
-              <div className="bg-gradient-to-r from-[#2b2b2b] to-[#d4d4d4] rounded-2xl p-6 border border-[#2b2b2b] mb-8">
-                <div className="space-y-3">
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="text-2xl">📸</span>
-                    <p className="text-sm font-semibold text-[#fff]">
-                      Your post is now live on Instagram!
-                    </p>
-                  </div>
-
-                  {publishedData.mediaId && (
-                    <div className="text-sm text-[#fff]">
-                      <span className="font-medium">Media ID:</span>{" "}
-                      {publishedData.mediaId}
-                    </div>
-                  )}
-
-                  {/* Preview Thumbnail */}
-                  {files.length > 0 && (
-                    <div className="mt-4">
-                      <div className="w-32 h-32 mx-auto rounded-xl overflow-hidden border-2 border-[#2b2b2b] shadow-lg">
-                        {files[0].type === "VIDEO" &&
-                        videoThumbnails[files[0].id] ? (
-                          <img
-                            src={videoThumbnails[files[0].id]}
-                            alt="Published content"
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <img
-                            src={files[0].preview}
-                            alt="Published content"
-                            className="w-full h-full object-cover"
-                          />
-                        )}
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                {publishedData.permalink && (
-                  <a
-                    href={publishedData.permalink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-3 px-8 py-3 bg-[#2b2b2b] text-white rounded-xl font-semibold hover:shadow-2xl hover:scale-105 transition-all duration-300"
-                  >
-                    <span className="text-xl">🔗</span>
-                    View on Instagram
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                      />
-                    </svg>
-                  </a>
-                )}
-
-                <button
-                  onClick={resetForm}
-                  className="px-8 py-3 bg-white border-2 border-[#D4D4D4] text-[#2B2B2B] rounded-xl font-semibold hover:bg-[#F1F1F1] transition-all duration-300"
-                >
-                  Create Another Post
-                </button>
-              </div>
-
-              <p className="text-sm text-[#919191] mt-6">
-                It may take a few moments for your post to appear on Instagram
-              </p>
+              {/* Rest of modal content */}
             </div>
           </div>
         </div>
@@ -1077,4 +1085,4 @@ const ContentPostingPage = () => {
   );
 };
 
-export default ContentPostingPage;
+export default ContentSchedulingPage;

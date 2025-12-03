@@ -4,6 +4,7 @@ import {
   linkInstagramAccount,
   manageIgDMAutomation,
   manageIgMediaAutomation,
+  manageIgPostSchedule,
   manageUser,
   postCommentOnInstagramAccount,
   publishInstagramContent,
@@ -142,6 +143,23 @@ export const manageIgDMAutomationApi = async (action, data) => {
       authMode: "userPool",
     });
     return response?.data?.manageIgDMAutomation;
+  } catch (error) {
+    console.error("Error:", error);
+    throw error;
+  }
+};
+
+export const manageIgPostScheduleApi = async (action, data) => {
+  try {
+    const response = await client.graphql({
+      query: manageIgPostSchedule,
+      variables: {
+        action: action,
+        input: data,
+      },
+      authMode: "userPool",
+    });
+    return response?.data?.manageIgPostSchedule;
   } catch (error) {
     console.error("Error:", error);
     throw error;

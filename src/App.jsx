@@ -13,6 +13,7 @@ import PostsPage from "./pages/posts";
 import PrivacyPolicyPage from "./pages/privacy-policy";
 import RegisterPage from "./pages/register";
 import TermsPage from "./pages/terms";
+import ContentSchedulingPage from "./pages/content-scheduling";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/content-posting" element={<ContentPostingPage />} />
+        <Route path="/content-scheduling" element={<ContentSchedulingPage />} />
         <Route path="/comment-automation" element={<CommentAutomationPage />} />
         <Route path="/dm-automation" element={<DMAutomationPage />} />
         <Route path="/inbox" element={<InstagramMessagesPage />} />
