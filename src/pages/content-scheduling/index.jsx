@@ -1,19 +1,18 @@
 import { getCurrentUser, signOut } from "aws-amplify/auth";
 import { uploadData } from "aws-amplify/storage";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  manageIgPostScheduleApi,
-  manageUserApi,
-  publishInstagramContentApi,
-} from "../../services/handleApi";
-import { getMediaUrl } from "../../utils/helper";
 import {
   CommentIcon,
   ContentIcon,
   DashboardIcon,
   PostsIcon,
 } from "../../assets/icons";
+import {
+  manageIgPostScheduleApi,
+  manageUserApi,
+} from "../../services/handleApi";
+import { getMediaUrl } from "../../utils/helper";
 
 const ContentSchedulingPage = () => {
   const navigate = useNavigate();
@@ -29,12 +28,10 @@ const ContentSchedulingPage = () => {
   const [thumbnailPreview, setThumbnailPreview] = useState(null);
   const [mediaType, setMediaType] = useState("IMAGE");
   const [caption, setCaption] = useState("");
-  const [location, setLocation] = useState("");
   const [currentPreview, setCurrentPreview] = useState(0);
   const [publishing, setPublishing] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const [videoThumbnails, setVideoThumbnails] = useState({});
-  const [postNow, setPostNow] = useState(true);
   const [scheduledDate, setScheduledDate] = useState("");
   const [scheduledTime, setScheduledTime] = useState("");
   const [publishSuccess, setPublishSuccess] = useState(false);
@@ -239,7 +236,7 @@ const ContentSchedulingPage = () => {
       return;
     }
 
-    if (!postNow && (!scheduledDate || !scheduledTime)) {
+    if (!scheduledDate || !scheduledTime) {
       alert("Please select a date and time for scheduling");
       return;
     }
@@ -319,7 +316,7 @@ const ContentSchedulingPage = () => {
 
       // Create ISO date string for scheduledAt
       let scheduledAtISO = null;
-      if (!postNow && scheduledDate && scheduledTime) {
+      if (scheduledDate && scheduledTime) {
         const scheduledDateTime = new Date(`${scheduledDate}T${scheduledTime}`);
         scheduledAtISO = scheduledDateTime.toISOString();
       }
@@ -352,9 +349,7 @@ const ContentSchedulingPage = () => {
         setPublishedData({
           mediaId: response.mediaId,
           permalink: response.permalink,
-          message:
-            response.message ||
-            (postNow ? "Published successfully!" : "Scheduled successfully!"),
+          message: response.message || "Scheduled successfully!",
         });
         setPublishSuccess(true);
       } else {
@@ -372,13 +367,12 @@ const ContentSchedulingPage = () => {
     setFiles([]);
     setStep(1);
     setCaption("");
-    setLocation("");
+
     setSelectedThumbnail(null);
     setThumbnailPreview(null);
     setMediaType("IMAGE");
     setUploadProgress(0);
     setVideoThumbnails({});
-    setPostNow(true);
     setScheduledDate("");
     setScheduledTime("");
     setCurrentPreview(0);
@@ -810,122 +804,69 @@ const ContentSchedulingPage = () => {
                       </div>
                     </div>
 
-                    {/* Location */}
-                    {/* <div>
-                      <label className="block text-sm font-semibold text-[#2B2B2B] mb-2">
-                        Location (Optional)
-                      </label>
-                      <input
-                        type="text"
-                        value={location}
-                        onChange={(e) => setLocation(e.target.value)}
-                        placeholder="Add location ID"
-                        className="w-full px-4 py-3 border-2 border-[#D4D4D4] rounded-xl focus:border-purple-500 focus:outline-none"
-                        disabled={publishing}
-                      />
-                    </div> */}
-
-                    {/* Post Now / Schedule Toggle */}
                     <div className="border-2 border-[#D4D4D4] rounded-xl p-4">
                       <div className="flex items-center justify-between mb-4">
                         <label className="text-sm font-semibold text-[#2B2B2B]">
                           Publishing Schedule
                         </label>
-                        <div className="flex items-center gap-2">
-                          <span
-                            className={`text-sm font-medium ${
-                              postNow ? "text-[#2b2b2b]" : "text-[#919191]"
-                            }`}
-                          >
-                            Post Now
-                          </span>
-                          <button
-                            onClick={() => setPostNow(!postNow)}
-                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
-                              postNow ? "bg-[#2b2b2b]" : "bg-[#D4D4D4]"
-                            }`}
-                            disabled={publishing}
-                          >
-                            <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
-                                postNow ? "translate-x-6" : "translate-x-1"
-                              }`}
-                            />
-                          </button>
-                        </div>
                       </div>
 
-                      {!postNow && (
-                        <div className="space-y-3">
-                          <div className="grid grid-cols-2 gap-3">
-                            <div>
-                              <label className="block text-xs font-medium text-[#919191] mb-1">
-                                Date *
-                              </label>
-                              <input
-                                type="date"
-                                value={scheduledDate}
-                                onChange={(e) =>
-                                  setScheduledDate(e.target.value)
-                                }
-                                min={new Date().toISOString().split("T")[0]}
-                                className="w-full px-3 py-2 border-2 border-[#D4D4D4] rounded-lg focus:border-[#2b2b2b] focus:outline-none text-sm"
-                                disabled={publishing}
-                              />
-                            </div>
-                            <div>
-                              <label className="block text-xs font-medium text-[#919191] mb-1">
-                                Time *
-                              </label>
-                              <input
-                                type="time"
-                                value={scheduledTime}
-                                onChange={(e) =>
-                                  setScheduledTime(e.target.value)
-                                }
-                                className="w-full px-3 py-2 border-2 border-[#D4D4D4] rounded-lg focus:border-[#2b2b2b] focus:outline-none text-sm"
-                                disabled={publishing}
-                              />
-                            </div>
+                      <div className="space-y-3">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-[#919191] mb-1">
+                              Date *
+                            </label>
+                            <input
+                              type="date"
+                              value={scheduledDate}
+                              onChange={(e) => setScheduledDate(e.target.value)}
+                              min={new Date().toISOString().split("T")[0]}
+                              className="w-full px-3 py-2 border-2 border-[#D4D4D4] rounded-lg focus:border-[#2b2b2b] focus:outline-none text-sm"
+                              disabled={publishing}
+                            />
                           </div>
+                          <div>
+                            <label className="block text-xs font-medium text-[#919191] mb-1">
+                              Time *
+                            </label>
+                            <input
+                              type="time"
+                              value={scheduledTime}
+                              onChange={(e) => setScheduledTime(e.target.value)}
+                              className="w-full px-3 py-2 border-2 border-[#D4D4D4] rounded-lg focus:border-[#2b2b2b] focus:outline-none text-sm"
+                              disabled={publishing}
+                            />
+                          </div>
+                        </div>
 
-                          {scheduledDate && scheduledTime && (
-                            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                              <p className="text-xs font-semibold text-blue-800 mb-1">
-                                📅 Scheduled for:
-                              </p>
-                              <p className="text-sm text-blue-700">
-                                {new Date(
-                                  `${scheduledDate}T${scheduledTime}`
-                                ).toLocaleString("en-US", {
-                                  weekday: "long",
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
-                                  hour: "2-digit",
-                                  minute: "2-digit",
-                                })}
-                              </p>
-                            </div>
-                          )}
-
-                          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
-                            <p className="text-xs text-yellow-800">
-                              ⏰ <strong>Note:</strong> Your post will be
-                              automatically published at the scheduled time.
+                        {scheduledDate && scheduledTime && (
+                          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+                            <p className="text-xs font-semibold text-blue-800 mb-1">
+                              📅 Scheduled for:
+                            </p>
+                            <p className="text-sm text-blue-700">
+                              {new Date(
+                                `${scheduledDate}T${scheduledTime}`
+                              ).toLocaleString("en-US", {
+                                weekday: "long",
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              })}
                             </p>
                           </div>
-                        </div>
-                      )}
+                        )}
 
-                      {postNow && (
-                        <div className="bg-green-50 border border-green-200 rounded-lg p-3">
-                          <p className="text-xs text-green-800">
-                            ⚡ <strong>Instant Publishing:</strong> Your post
-                            will be published immediately to Instagram.
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+                          <p className="text-xs text-yellow-800">
+                            ⏰ <strong>Note:</strong> Your post will be
+                            automatically published at the scheduled time.
                           </p>
                         </div>
-                      )}
+                      </div>
                     </div>
 
                     {/* Upload Progress */}
@@ -933,7 +874,7 @@ const ContentSchedulingPage = () => {
                       <div>
                         <div className="flex justify-between items-center mb-2">
                           <span className="text-sm font-semibold text-[#2B2B2B]">
-                            {postNow ? "Publishing..." : "Scheduling..."}
+                            Scheduling...
                           </span>
                           <span className="text-sm text-[#919191]">
                             {Math.round(uploadProgress)}%
@@ -962,7 +903,8 @@ const ContentSchedulingPage = () => {
                       disabled={
                         publishing ||
                         !caption.trim() ||
-                        (!postNow && (!scheduledDate || !scheduledTime))
+                        !scheduledDate ||
+                        !scheduledTime
                       }
                       className="flex-1 py-3 bg-[#2b2b2b] text-white rounded-xl font-semibold hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
@@ -988,14 +930,12 @@ const ContentSchedulingPage = () => {
                               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                             ></path>
                           </svg>
-                          {postNow ? "Publishing..." : "Scheduling..."}
+                          Scheduling...
                         </>
                       ) : (
                         <>
-                          <span className="text-xl">
-                            {postNow ? "🚀" : "📅"}
-                          </span>
-                          {postNow ? "Publish to Instagram" : "Schedule Post"}
+                          <span className="text-xl">{"📅"}</span>
+                          Schedule Post
                         </>
                       )}
                     </button>
@@ -1043,6 +983,11 @@ const ContentSchedulingPage = () => {
                         {new Date(post.scheduledAt).toLocaleDateString()}
                       </span>
                     </div>
+                    <img
+                      src={post.imageUrl || post.thumbnailUrl}
+                      alt="Scheduled Post"
+                      className="w-full h-48 object-cover mb-3 border-2 border-[#D4D4D4] rounded-xl"
+                    />
                     <p className="text-sm text-[#2B2B2B] line-clamp-3 mb-3">
                       {post.caption}
                     </p>
@@ -1062,18 +1007,15 @@ const ContentSchedulingPage = () => {
           <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full overflow-hidden">
             <div className="p-12 text-center">
               <div className="w-20 h-20 mx-auto mb-6 bg-gradient-to-br from-green-500 to-emerald-500 rounded-full flex items-center justify-center animate-bounce">
-                <span className="text-4xl">{postNow ? "🎉" : "📅"}</span>
+                <span className="text-4xl">{"📅"}</span>
               </div>
 
               <h2 className="text-xl font-bold text-[#2B2B2B] mb-4">
-                {postNow
-                  ? "Published Successfully!"
-                  : "Scheduled Successfully!"}
+                Scheduled Successfully!
               </h2>
               <p className="text-lg text-[#919191] mb-6">
-                {postNow
-                  ? "Your content has been published to Instagram"
-                  : "Your content has been scheduled and will be published automatically"}
+                Your content has been scheduled and will be published
+                automatically
               </p>
 
               {/* Rest of modal content */}
