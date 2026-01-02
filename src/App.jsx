@@ -14,6 +14,7 @@ import PrivacyPolicyPage from "./pages/privacy-policy";
 import RegisterPage from "./pages/register";
 import TermsPage from "./pages/terms";
 import ContentSchedulingPage from "./pages/content-scheduling";
+import ConnectSocialPage from "./pages/connect-social";
 
 Amplify.configure(awsmobile, { ssr: true });
 
@@ -29,6 +30,7 @@ function App() {
         <Route path="/gdpr" element={<GDPRPage />} />
         <Route path="/" element={<LandingPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/connect-social" element={<ConnectSocialPage />} />
         <Route path="/posts" element={<PostsPage />} />
         <Route path="/content-posting" element={<ContentPostingPage />} />
         <Route path="/content-scheduling" element={<ContentSchedulingPage />} />
